@@ -16,11 +16,14 @@ for cog in cogs:
 @bot.command()
 @commands.is_owner()
 async def load_extension(inter, extension_name: str):
-    try:
-        bot.load_extension(f"cogs.{extension_name}")
-        await inter.send(f"Расширение '{extension_name}' успешно загружено.")
-    except Exception as e:
-        await inter.send(f"Ошибка при загрузке расширения: {type(e).__name__} - {e}")
+    if inter.guild is not None:
+        try:
+            bot.load_extension(f"cogs.{extension_name}")
+            await inter.send(f"Расширение '{extension_name}' успешно загружено.")
+        except Exception as e:
+            await inter.send(f"Ошибка при загрузке расширения: {type(e).__name__} - {e}")
+    else:
+        await inter.send('Команда должна быть выполнена на сервере.')
 
 
 @bot.command()
